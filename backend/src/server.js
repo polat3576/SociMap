@@ -1,7 +1,7 @@
-require('dotenv').config(); // bu kütüphane .env dosyamızın içinden db şifresi gibi gizli bilgileri okur 
+
 const http = require("http");// http modulünü eklememizi sağlar handshake yapmamız için gerekli 
 const  {Server} = require("socket.io");//real-time işlemleri gerçekleştirmemizi sağlayan kütüphane 
-const app = require("./app");
+const app = require("../index");
 
 
 
@@ -14,8 +14,10 @@ const io = new Server(socimapserver,{// socket io sunucusunu başlatır sunucuya
     }
 
 });
-require("./sockets")(io); //index.js içinde io değişkenini bulup getirir
+require("./sockets/socket")(io); //socket.js içinde io parametrisini bulup getirir
   const PORT = (process.env.PORT)|| 3000;// env dosyasını okur içinde port bilgisi bulamssa 3000 de açar
   socimapserver.listen(PORT, '0.0.0.0', ()=>{
     console.log(`sunucu ${PORT} portunda`);
+    console.log(`Swagger: http://localhost:${PORT}/api-docs`);
   });
+  

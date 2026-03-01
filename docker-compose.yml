@@ -1,37 +1,34 @@
 version: '3.8'
 
 services:
-  #  Veritabanı: PostGIS (Harita ve Konum İşlemleri İçin)
   db:
-    image: postgis/postgis:15-3.3-alpine
+    image: postgis/postgis:15-3.3
     container_name: socimap_db
-    restart: always
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=secret_password
-      - POSTGRES_DB=socimap_geodb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: socimap
     ports:
       - "5432:5432"
     volumes:
-      - socimap_db_data:/var/lib/postgresql/data #  Veriler konteyner kapansa da silinmez
+      - pgdata:/var/lib/postgresql/data # Veritabanı silinmesin diye verileri kaydeder
 
-  #  Backend: Node.js Sunucusu
-  app:
-    build: ./backend
-    container_name: socimap_backend
-    restart: always
+  api:
+    build: ./backend # DÜZELTİLDİ: Artık doğru klasöre bakacak
+    container_name: socimap_api
     ports:
       - "3000:3000"
-    volumes:
-      - ./backend:/app              #  Kod değişikliğini anında konteynere yansıtır
-      - /app/node_modules           #  Konteyner içindeki kütüphaneleri korur
     environment:
-      - PORT=3000
-      - DB_URL=postgres://admin:secret_password@db:5432/socimap_geodb
-      - CHOKIDAR_USEPOLLING=true    #  Windows'ta dosya değişimlerini yakalamak için
+      - DB_USER=admin
+      - DB_PASSWORD=secretpassword
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=socimap
+    volumes:
+      - ./backend:/app          # DÜZELTİLDİ: Kodları doğru klasörden çekecek
+      - /app/node_modules       
     depends_on:
-      - db                          #  Önce veritabanının açılmasını bekler
+      - db                      
 
-#  Şantiyenin Kalıcı Deposu
 volumes:
-  socimap_db_data:
+  pgdata:

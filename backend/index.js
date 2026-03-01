@@ -135,21 +135,4 @@ app.get('/api/events/nearby', async (req, res) => {
 });
 
 
-// --- SOCKET.IO ---
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*", methods: ["GET", "POST"] } });
-
-io.on('connection', (socket) => {
-  socket.on('join_room', (eventId) => {
-    socket.join(eventId);
-    io.to(eventId).emit('system_message', `Yeni bir kullanıcı sohbete katıldı.`);
-  });
-  socket.on('send_message', (data) => {
-    io.to(data.eventId).emit('receive_message', data);
-  });
-});
-
-server.listen(port, () => {
-  console.log(`🚀 Sunucu http://localhost:${port} adresinde hazır!`);
-  console.log(`📚 Swagger: http://localhost:${port}/api-docs`);
-});
+module.exports=(app);
