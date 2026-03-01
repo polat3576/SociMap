@@ -1,0 +1,14 @@
+name: socimap
+description: SociMap bitirme projesi mobil uygulaması.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '^3.11.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_maps_flutter: ^2.5.3
+  geolocator: ^11.0.0
+  permission_handler: ^11.3.0
