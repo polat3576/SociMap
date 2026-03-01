@@ -16,6 +16,6 @@ const io = new Server(socimapserver,{// socket io sunucusunu başlatır sunucuya
 });
 require("./sockets")(io); //index.js içinde io değişkenini bulup getirir
   const PORT = (process.env.PORT)|| 3000;// env dosyasını okur içinde port bilgisi bulamssa 3000 de açar
-  socimapserver.listen(PORT,()=>{
+  socimapserver.listen(PORT, '0.0.0.0', ()=>{
     console.log(`sunucu ${PORT} portunda`);
   });
